@@ -26,6 +26,7 @@ declare module 'vue-router/auto-routes' {
     'KeepAlive': RouteRecordInfo<'KeepAlive', '/keepalive', Record<never, never>, Record<never, never>>,
     'login': RouteRecordInfo<'login', '/login', Record<never, never>, Record<never, never>>,
     'mock': RouteRecordInfo<'mock', '/mock', Record<never, never>, Record<never, never>>,
+    'myFrame': RouteRecordInfo<'myFrame', '/myFrame', Record<never, never>, Record<never, never>>,
     'profile': RouteRecordInfo<'profile', '/profile', Record<never, never>, Record<never, never>>,
     'register': RouteRecordInfo<'register', '/register', Record<never, never>, Record<never, never>>,
     'ScrollCache': RouteRecordInfo<'ScrollCache', '/scroll-cache', Record<never, never>, Record<never, never>>,

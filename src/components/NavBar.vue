@@ -13,11 +13,16 @@ function onBack() {
 
 const { t } = useI18n()
 
-const title = computed(() => {
-  if (!route.meta)
-    return ''
+const title = ref()
 
-  return route.meta.i18n ? t(route.meta.i18n) : (route.meta.title || '')
+watch(() => route?.meta, () => {
+  if (!route.meta)
+    title.value = ''
+
+  title.value = route.meta.i18n ? t(route.meta.i18n) : (route.meta.title || '')
+}, {
+  deep: true,
+  flush: 'post',
 })
 
 const showLeftArrow = computed(() => route.name && routeWhiteList.includes(route.name))

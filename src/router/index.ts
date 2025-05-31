@@ -22,6 +22,9 @@ if (import.meta.hot)
   handleHotUpdate(router)
 
 router.beforeEach(async (to: EnhancedRouteLocation) => {
+  if (to.path.includes('android_asset')) {
+    router.replace('/')
+  }
   NProgress.start()
 
   const routeCacheStore = useRouteCacheStore()

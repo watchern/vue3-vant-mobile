@@ -7,6 +7,7 @@ import 'virtual:uno.css'
 import '@/styles/app.less'
 import '@/styles/var.less'
 import { i18n } from '@/utils/i18n'
+import Vue3TouchEvents from 'vue3-touch-events'
 
 // Vant 桌面端适配
 import '@vant/touch-emulator'
@@ -26,6 +27,7 @@ const app = createApp(App)
 const head = createHead()
 
 app.use(head)
+app.use(Vue3TouchEvents)
 app.use(router)
 app.use(pinia)
 app.use(i18n)

@@ -21,7 +21,7 @@ import { createViteVConsole } from './vconsole'
 export function createVitePlugins(mode: string) {
   const env = loadEnv(mode, process.cwd())
 
-  return [
+  const plugins = [
     // https://github.com/posva/unplugin-vue-router
     VueRouter({
       extensions: ['.vue'],
@@ -91,34 +91,39 @@ export function createVitePlugins(mode: string) {
 
     // https://github.com/vuejs/devtools-next
     VueDevTools(),
-
-    // https://github.com/antfu/vite-plugin-pwa
-    VitePWA({
-      registerType: 'autoUpdate',
-      includeAssets: ['favicon.svg', 'safari-pinned-tab.svg'],
-      manifest: {
-        name: 'vue3-vant-mobile',
-        short_name: 'vue3-vant-mobile',
-        theme_color: '#ffffff',
-        icons: [
-          {
-            src: '/pwa-192x192.png',
-            sizes: '192x192',
-            type: 'image/png',
-          },
-          {
-            src: '/pwa-512x512.png',
-            sizes: '512x512',
-            type: 'image/png',
-          },
-          {
-            src: '/pwa-512x512.png',
-            sizes: '512x512',
-            type: 'image/png',
-            purpose: 'any maskable',
-          },
-        ],
-      },
-    }),
   ]
+  if (env.VITE_H5_APP !== 'true') {
+    // H5APP 无需WPA
+    plugins.push(
+      // https://github.com/antfu/vite-plugin-pwa
+      VitePWA({
+        registerType: 'autoUpdate',
+        includeAssets: ['favicon.svg', 'safari-pinned-tab.svg'],
+        manifest: {
+          name: 'vue3-vant-mobile',
+          short_name: 'vue3-vant-mobile',
+          theme_color: '#ffffff',
+          icons: [
+            {
+              src: '/pwa-192x192.png',
+              sizes: '192x192',
+              type: 'image/png',
+            },
+            {
+              src: '/pwa-512x512.png',
+              sizes: '512x512',
+              type: 'image/png',
+            },
+            {
+              src: '/pwa-512x512.png',
+              sizes: '512x512',
+              type: 'image/png',
+              purpose: 'any maskable',
+            },
+          ],
+        },
+      }),
+    )
+  }
+  return plugins
 }

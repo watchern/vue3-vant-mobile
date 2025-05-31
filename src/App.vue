@@ -31,20 +31,37 @@ const keepAliveRouteNames = computed(() => {
 const mode = computed(() => {
   return isDark.value ? 'dark' : 'light'
 })
+const router = useRouter()
+function onSwipe(...arg) {
+  console.warn('onSwipe', arg)
+  if (window.history.state.back) {
+    history.back()
+  }
+  else {
+    console.warn('router-replace')
+    router.replace('/')
+  }
+}
 </script>
 
 <template>
-  <van-config-provider :theme="mode">
-    <nav-bar />
-    <router-view v-slot="{ Component }">
-      <section class="app-wrapper">
-        <keep-alive :include="keepAliveRouteNames">
-          <component :is="Component" />
-        </keep-alive>
-      </section>
-    </router-view>
-    <tab-bar />
-  </van-config-provider>
+  <div
+    v-touch:swipe.left="onSwipe"
+    v-touch:swipe.right="onSwipe"
+    style="height:100vh"
+  >
+    <van-config-provider :theme="mode">
+      <nav-bar />
+      <router-view v-slot="{ Component }">
+        <section class="app-wrapper">
+          <keep-alive :include="keepAliveRouteNames">
+            <component :is="Component" />
+          </keep-alive>
+        </section>
+      </router-view>
+      <tab-bar />
+    </van-config-provider>
+  </div>
 </template>
 
 <style scoped>
