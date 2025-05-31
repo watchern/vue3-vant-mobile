@@ -48,6 +48,14 @@ function frame(url) {
           <div class="i-carbon:doc text-gray-400 mr-5 self-center" />
         </template>
       </van-cell>
+      <van-cell
+        title="H5 使用移动端摄像头" is-link
+        @click="frame('https://m-stg2.tianxiaxinyong.com/cooperation/b-test.html')"
+      >
+        <template #icon>
+          <div class="i-carbon:doc text-gray-400 mr-5 self-center" />
+        </template>
+      </van-cell>
     </VanCellGroup>
   </div>
 </template>

@@ -12,14 +12,15 @@ const frameSrc = ref('')
 if (redirect === 'https://easy-temps.github.io/easy-docs/vue3-vant-mobile/') {
   const title = '文档中心title'
   const i18n = '文档中心i18n'
-  frameSrc.value = redirect
   // router.currentRoute.value.meta.title = title
   // router.currentRoute.value.meta.i18n = i18n
   route.meta.title = title
   route.meta.i18n = i18n
   setPageTitle(title)
 }
+frameSrc.value = String(redirect)
 const frameRef = ref(null)
+const videoRef = ref(null)
 const frameLoading = ref(true)
 console.warn(frameRef)
 console.warn(frameLoading.value)
@@ -32,8 +33,10 @@ const mask = ref(false)
 function init() {
   // 识别和处理多种常见的条形码和二维码格式
   codeReader = new BrowserMultiFormatReader()
+  console.warn('codeReader', codeReader)
   // 获取当前设备上可用的视频输入设备列表
   codeReader.getVideoInputDevices().then((videoInputDevices) => {
+    console.warn('videoInputDevices', videoInputDevices)
     if (videoInputDevices.length > 1) {
       // 后缀摄像头（手机）
       selectedDeviceId = videoInputDevices[1].deviceId
@@ -42,10 +45,13 @@ function init() {
       // 前置摄像头
       selectedDeviceId = videoInputDevices[0].deviceId
     }
+  }).catch((err) => {
+    console.warn(err)
   })
 }
 
 onMounted(() => {
+  console.warn(frameRef.value)
   frameRef.value.onload = function () {
     //    后续操作
     frameLoading.value = false
@@ -80,11 +86,21 @@ onBeforeRouteLeave(() => {
 })
 
 console.warn(frameLoading.value)
+console.warn('webView', window)
 console.warn(router, route, redirect, othersQuery)
 </script>
 
 <template>
   <div>
+    <div style="display:flex">
+      <span> 照相机 </span><input type="file" title="camera" accept="image/*" capture="user">
+    </div>
+    <div style="display:flex">
+      摄像机 <input type="file" accept="video/*" title="camcorder" capture="user">
+    </div>
+    <div style="display:flex">
+      录音 <input type="file" accept="audio/*" title="microphone" capture="user">
+    </div>
     <button @click="scanner">
       扫码
     </button>&nbsp;
@@ -92,7 +108,7 @@ console.warn(router, route, redirect, othersQuery)
       关闭
     </button>&nbsp;
     <div v-if="mask" class="scanContainer">
-      <video id="video" />
+      <video id="video" ref="videoRef" />
       <div class="mask" />
       <div class="" style="position: absolute;right:10px;bottom:0" @click="close">
         关闭
@@ -106,6 +122,7 @@ console.warn(router, route, redirect, othersQuery)
     <iframe
       v-show="!frameLoading" ref="frameRef"
       style="width:100%;height:500px"
+      allow="microphone;camera;camcorder;"
       :src="frameSrc"
     />
   </div>
